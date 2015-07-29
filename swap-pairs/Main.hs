@@ -2,11 +2,11 @@ module Main where
 
 import Data.List
 import Control.Monad.State
-import qualified Data.Map as M
+import qualified Data.Set as S
 import System.Environment
 
 
-type SolvingState = State (M.Map String Bool) [[String]]
+type SolvingState = State (S.Set String) [[String]]
 
 
 main :: IO ()
@@ -19,7 +19,7 @@ main = do
     where
         findAll to = filter (not . null . snd) $ map (getSol to) $ filter (/= to) $ permutations to
         printSol = intercalate " -> "
-        getSol to from = (from, evalState (findPath [[from]] to) (M.insert from True M.empty))
+        getSol to from = (from, evalState (findPath [[from]] to) (S.insert from S.empty))
 
 
 findPath :: [[String]] -> String -> SolvingState
@@ -47,8 +47,8 @@ step to from = do
             return clean
         unique c = do
             m <- get
-            return $ filter (`M.notMember` m) $ variants c
-        register n = modify (M.insert n True)
+            return $ filter (`S.notMember` m) $ variants c
+        register n = modify (S.insert n)
 
 
 variants :: String -> [String]
