@@ -29,11 +29,20 @@ function check_progress(filename) {
                 data = JSON.parse(xhr.responseText);
                 show_progress(filename, data.progress);
                 if(data.progress !== 100) {
-                    setTimeout(check_progress(filename), 2 * 100);
+                    setTimeout(check_progress(filename));
                 }
             }
         };
     };
+}
+
+function prepare_form() {
+    'use strict';
+
+    var file = document.getElementById('file').files[0],
+        filesize = document.getElementById('filesize');
+
+    filesize.value = file.size;
 }
 
 

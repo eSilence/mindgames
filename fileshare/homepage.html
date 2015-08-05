@@ -10,7 +10,11 @@
     </head>
     <body>
         <form name="upload" enctype="multipart/form-data">
-            <div><input name="file" type="file"/></div>
+            <div>
+                <input name="filesize" id="filesize" type="hidden"/>
+                <input name="file" id="file" type="file" onchange="prepare_form();"/>
+            </div>
+
             <div>
                 <div><input type="submit" value="Загрузить"/></div>
                 <div style="float:none;"></div>
