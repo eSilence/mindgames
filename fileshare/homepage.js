@@ -1,5 +1,7 @@
 /*global document,alert,FormData,XMLHttpRequest,JSON*/
 function show_progress(filename, progress) {
+    'use strict';
+
     var span = document.getElementById('progress');
     if(progress === 100) {
         span.innerHTML = '<a href="' + filename + '">' + filename + '</a>';
@@ -17,7 +19,7 @@ function check_progress(filename) {
         xhr.open('GET', '/?name=' + filename);
         xhr.send();
         xhr.onreadystatechange = function() {
-            var data, span;
+            var data;
             if (xhr.readyState !== 4) {
                 return;
             }
