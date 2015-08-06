@@ -29,13 +29,16 @@ class HttpRequestHandler(aiohttp.server.ServerHttpProtocol):
             yield from self.do_GET(message, payload)
 
     def do_GET(self, message, payload):
-        response = aiohttp.Response(self.writer, 200, http_version=message.version)
+        response = aiohttp.Response(self.writer, 200,
+                                    http_version=message.version)
         if '?' in message.path:
             query = message.path.split('?')[1]
             _, name = query.split('=')
             registry = UploadRegistry()
             data = json.dumps(
-                {'progress': int(registry.get(unquote(name), 0) * 100)}).encode()
+                {
+                    'progress': int(registry.get(unquote(name), 0) * 100)
+                }).encode()
             yield from self.send_json(response, data)
         else:
             file_path = os.path.join(*message.path[1:].split('/'))
@@ -68,7 +71,8 @@ class HttpRequestHandler(aiohttp.server.ServerHttpProtocol):
             registry[part.filename] = 1
 
         data = json.dumps({'progress': 100}).encode()
-        response = aiohttp.Response(self.writer, 200, http_version=message.version)
+        response = aiohttp.Response(self.writer, 200,
+                                    http_version=message.version)
         yield from self.send_json(response, data)
 
     def show_file(self, response, file_path):
@@ -107,7 +111,8 @@ class HttpRequestHandler(aiohttp.server.ServerHttpProtocol):
 if __name__ == '__main__':
     loop = asyncio.get_event_loop()
     f = loop.create_server(
-        lambda: HttpRequestHandler(debug=True, keep_alive=75), '0.0.0.0', '8080')
+        lambda: HttpRequestHandler(debug=True, keep_alive=75), '0.0.0.0',
+        '8080')
     srv = loop.run_until_complete(f)
     print('serving on', srv.sockets[0].getsockname())
     try:
