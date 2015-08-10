@@ -1,0 +1,36 @@
+{% load staticfiles %}
+<!doctype>
+<html lang="ru">
+<title>Django challenge</title>
+<link href="{% static 'bootstrap/css/bootstrap.min.css' %}" type="text/css" rel="stylesheet">
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
+<style>
+.error {
+    color: red;
+}
+</style>
+<body>
+    <div class="container">
+        <div class="col-md-1">
+        </div>
+        <div class="col-md-2">
+            {% for m in models %}
+            <a href="javascript:;" name="{{m.0}}" class="tname">{{m.1.meta.verbose_name}}</a><br>
+            {% endfor %}
+        </div>
+        <div class="col-md-7">
+            <table class="table table-bordered">
+            </table>
+            <form id="newItemForm" class="form-horizontal" role="form" action="/api/" method="post">
+            </form>
+        </div>
+    </div>
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.0/jquery.validate.min.js"></script>
+<script type="text/javascript" src="{% static 'js/jquery.cookie.js' %}"></script>
+<script type="text/javascript" src="https://code.jquery.com/ui/1.11.0/jquery-ui.min.js"></script>
+<script src="http://malsup.github.com/jquery.form.js"></script>
+<script type="text/javascript" src="{% static 'js/auinput.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/json.js' %}"></script>
+</body>
+</html>
