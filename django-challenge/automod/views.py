@@ -16,11 +16,14 @@ from .helpers import json_prepare, to_json
 
 # Create your views here.
 
+
 def home(request):
-    return render(request, 'home.html', {'models': [(m, MODELS[m]['instance']) for m in MODELS]})
+    return render(request, 'home.html',
+                  {'models': [(m, MODELS[m]['instance']) for m in MODELS]})
 
 
 class JsonApi(View):
+
     @method_decorator(ensure_csrf_cookie)
     def get(self, request):
         table = request.GET.get('table')
@@ -33,7 +36,8 @@ class JsonApi(View):
         return to_json({
             'table': table,
             'fields': model['fields'],
-            'rows': [{k:json_prepare(v) for k, v in r.items()} for r in values],
+            'rows': [{k: json_prepare(v)
+                      for k, v in r.items()} for r in values],
         })
 
     def post(self, request):
@@ -49,7 +53,10 @@ class JsonApi(View):
             return to_json({
                 'table': table,
                 'fields': model['fields'],
-                'rows': [{f['id']:json_prepare(getattr(m, f['id'])) for f in model['fields']}]
+                'rows': [{
+                    f['id']: json_prepare(getattr(m, f['id']))
+                    for f in model['fields']
+                }]
             })
         return to_json({})
 
@@ -67,7 +74,8 @@ class JsonApi(View):
         field = data.get('field')
         value = data.get('value')
         try:
-            nrows = model['instance'].objects.filter(id=rowid).update(**{field: value})
+            nrows = model['instance'].objects.filter(id=rowid).update(
+                **{field: value})
             return to_json({
                 'success': nrows == 1,
                 'table': table,

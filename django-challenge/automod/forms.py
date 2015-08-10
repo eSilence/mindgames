@@ -15,5 +15,5 @@ class {model}Form(forms.ModelForm):
 FORMS = {}
 
 for m in models.MODELS:
-    exec(form_tmpl.format(model=m))
+    exec (form_tmpl.format(model=m))
     FORMS[m] = locals()['{0}Form'.format(m)]

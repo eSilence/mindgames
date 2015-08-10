@@ -19,8 +19,12 @@ class UsersModelTest(TestCase):
     def setUp(self):
 
         Users.objects.bulk_create([
-            Users(name='User1', paycheck=100, date_joined=self.yesterday),
-            Users(name='User2', paycheck=200, date_joined=self.today),
+            Users(name='User1',
+                  paycheck=100,
+                  date_joined=self.yesterday),
+            Users(name='User2',
+                  paycheck=200,
+                  date_joined=self.today),
         ])
 
     def test_saving(self):
@@ -44,11 +48,14 @@ class UsersModelTest(TestCase):
 
 
 class RoomsModelTest(TestCase):
+
     def setUp(self):
 
         Rooms.objects.bulk_create([
-            Rooms(department='Room1', spots=3),
-            Rooms(department='Room2', spots=5),
+            Rooms(department='Room1',
+                  spots=3),
+            Rooms(department='Room2',
+                  spots=5),
         ])
 
     def test_saving(self):
@@ -65,15 +72,21 @@ class RoomsModelTest(TestCase):
         self.assertEqual(rooms[0].spots, 3)
         self.assertEqual(rooms[1].spots, 5)
 
+
 class HomepageTest(TestCase):
+
     def setUp(self):
         self.c = Client()
         self.url = '/'
 
     def test_model_links(self):
         response = self.c.get(self.url)
-        self.assertIn('<a href="javascript:;" name="Users" class="tname">Пользователи</a>', response.content)
-        self.assertIn('<a href="javascript:;" name="Rooms" class="tname">Комнаты</a>', response.content)
+        self.assertIn(
+            '<a href="javascript:;" name="Users" class="tname">Пользователи</a>',
+            response.content)
+        self.assertIn(
+            '<a href="javascript:;" name="Rooms" class="tname">Комнаты</a>',
+            response.content)
 
 
 class JsonApiTest(TestCase):
@@ -83,7 +96,7 @@ class JsonApiTest(TestCase):
     def setUp(self):
         self.c = Client()
         self.url = '/api/'
-        with open("tables", "r") as f:
+        with open('tables', 'r') as f:
             self.spec = yaml.load(f)
 
     def test_get_table_name(self):
@@ -108,10 +121,15 @@ class JsonApiTest(TestCase):
         self.assertIn('rows', data)
         self.assertEqual(data['rows'][0]['name'], 'User')
         self.assertEqual(data['rows'][0]['paycheck'], 100)
-        self.assertEqual(data['rows'][0]['date_joined'], self.today.isoformat())
+        self.assertEqual(data['rows'][0]['date_joined'],
+                         self.today.isoformat())
 
     def test_post_creates_new_row(self):
-        user = {'name': 'User', 'paycheck': 150, 'date_joined': self.today.isoformat()}
+        user = {
+            'name': 'User',
+            'paycheck': 150,
+            'date_joined': self.today.isoformat()
+        }
         data = {'table': 'Users'}
         data.update(user)
 
@@ -121,7 +139,11 @@ class JsonApiTest(TestCase):
         self.assertEqual(Users.objects.get(id=1), Users(id=1, **user))
 
     def test_post_returns_new_row(self):
-        user = {'name': 'User', 'paycheck': 150, 'date_joined': self.today.isoformat()}
+        user = {
+            'name': 'User',
+            'paycheck': 150,
+            'date_joined': self.today.isoformat()
+        }
         data = {'table': 'Users'}
         data.update(user)
 
@@ -133,7 +155,10 @@ class JsonApiTest(TestCase):
         self.assertEqual(data['rows'][0], user)
 
     def test_put_updates_row(self):
-        user = Users.objects.create(**{'name': 'User', 'paycheck': 150, 'date_joined': self.today})
+        user = Users.objects.create(
+            **{'name': 'User',
+               'paycheck': 150,
+               'date_joined': self.today})
 
         indata = {
             'table': 'Users',

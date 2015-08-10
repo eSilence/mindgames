@@ -34,8 +34,12 @@ class SeleniumTests(StaticLiveServerTestCase):
 
     def setUp(self):
         Users.objects.bulk_create([
-            Users(name='User1', paycheck=100, date_joined=datetime.date.today()),
-            Users(name='User2', paycheck=150, date_joined=datetime.date.today()),
+            Users(name='User1',
+                  paycheck=100,
+                  date_joined=datetime.date.today()),
+            Users(name='User2',
+                  paycheck=150,
+                  date_joined=datetime.date.today()),
         ])
         self.driver.get(self.live_server_url)
 
@@ -56,7 +60,9 @@ class SeleniumTests(StaticLiveServerTestCase):
     def test_add_two_new_rows(self):
         self._open_table_with_users()
         self._add_new_user()
-        self._add_new_user(name='Max', paycheck='500', date_joined='2013-01-01')
+        self._add_new_user(name='Max',
+                           paycheck='500',
+                           date_joined='2013-01-01')
 
         self._check_nrows(4)
         self._check_user('Semen')
@@ -79,20 +85,27 @@ class SeleniumTests(StaticLiveServerTestCase):
         self._check_user('Semen')
 
     def _open_table_with_users(self):
-        self._open_table("Users", "name")
+        self._open_table('Users', 'name')
 
     def _open_table_with_rooms(self):
-        self._open_table("Rooms", "department")
+        self._open_table('Rooms', 'department')
 
     def _open_table(self, table, wait_for):
-        self.driver.find_element_by_css_selector("a.tname[name={}]".format(table)).click()
-        WebDriverWait(self.driver, 10).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "th#{}".format(wait_for))))
+        self.driver.find_element_by_css_selector(
+            'a.tname[name={}]'.format(table)).click()
+        WebDriverWait(self.driver, 10).until(EC.visibility_of_element_located(
+            (By.CSS_SELECTOR, 'th#{}'.format(wait_for))))
 
-    def _add_new_user(self, name='Semen', paycheck=300, date_joined='2014-01-01'):
-        self.driver.find_element_by_css_selector("#nameInput").send_keys(name)
-        self.driver.find_element_by_css_selector("#paycheckInput").send_keys(paycheck)
-        self.driver.find_element_by_css_selector("#date_joinedInput").send_keys(date_joined)
-        self.driver.find_element_by_css_selector("button[type=submit]").click()
+    def _add_new_user(self,
+                      name='Semen',
+                      paycheck=300,
+                      date_joined='2014-01-01'):
+        self.driver.find_element_by_css_selector('#nameInput').send_keys(name)
+        self.driver.find_element_by_css_selector(
+            '#paycheckInput').send_keys(paycheck)
+        self.driver.find_element_by_css_selector(
+            '#date_joinedInput').send_keys(date_joined)
+        self.driver.find_element_by_css_selector('button[type=submit]').click()
         time.sleep(0.1)
 
     def _check_nrows(self, nrows):
@@ -105,7 +118,7 @@ class SeleniumTests(StaticLiveServerTestCase):
 
     def _update_name_field(self):
         self._open_table_with_users()
-        field = self.driver.find_element_by_css_selector("input[value=User1]")
+        field = self.driver.find_element_by_css_selector('input[value=User1]')
         field.click()
         field.clear()
         field.send_keys('Semen')
