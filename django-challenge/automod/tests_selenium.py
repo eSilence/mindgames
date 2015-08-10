@@ -6,7 +6,7 @@ from __future__ import unicode_literals
 import datetime
 import time
 
-from django.test import LiveServerTestCase
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -16,7 +16,7 @@ import selenium.webdriver.support.expected_conditions as EC
 from .models import Users
 
 
-class SeleniumTests(LiveServerTestCase):
+class SeleniumTests(StaticLiveServerTestCase):
 
     @classmethod
     def setUpClass(cls):

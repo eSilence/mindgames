@@ -9,6 +9,7 @@ form_tmpl = """\
 class {model}Form(forms.ModelForm):
 \tclass Meta:
 \t\tmodel = models.{model}
+\t\texclude = []
 """
 
 FORMS = {}
