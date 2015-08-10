@@ -1,53 +1,38 @@
 # -*- coding: utf-8 -*-
-from south.utils import datetime_utils as datetime
-from south.db import db
-from south.v2 import SchemaMigration
-from django.db import models
+from __future__ import unicode_literals
+
+from django.db import models, migrations
 
 
-class Migration(SchemaMigration):
+class Migration(migrations.Migration):
 
-    def forwards(self, orm):
-        # Adding model 'Users'
-        db.create_table(u'automod_users', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('name', self.gf('django.db.models.fields.CharField')(max_length=256)),
-            ('paycheck', self.gf('django.db.models.fields.IntegerField')()),
-            ('date_joined', self.gf('django.db.models.fields.DateField')()),
-        ))
-        db.send_create_signal(u'automod', ['Users'])
+    dependencies = [
+    ]
 
-        # Adding model 'Rooms'
-        db.create_table(u'automod_rooms', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('department', self.gf('django.db.models.fields.CharField')(max_length=256)),
-            ('spots', self.gf('django.db.models.fields.IntegerField')()),
-        ))
-        db.send_create_signal(u'automod', ['Rooms'])
-
-
-    def backwards(self, orm):
-        # Deleting model 'Users'
-        db.delete_table(u'automod_users')
-
-        # Deleting model 'Rooms'
-        db.delete_table(u'automod_rooms')
-
-
-    models = {
-        u'automod.rooms': {
-            'Meta': {'object_name': 'Rooms'},
-            'department': ('django.db.models.fields.CharField', [], {'max_length': '256'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'spots': ('django.db.models.fields.IntegerField', [], {})
-        },
-        u'automod.users': {
-            'Meta': {'object_name': 'Users'},
-            'date_joined': ('django.db.models.fields.DateField', [], {}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '256'}),
-            'paycheck': ('django.db.models.fields.IntegerField', [], {})
-        }
-    }
-
-    complete_apps = ['automod']
+    operations = [
+        migrations.CreateModel(
+            name='Rooms',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('department', models.CharField(max_length=256, verbose_name='\u041e\u0442\u0434\u0435\u043b')),
+                ('spots', models.IntegerField(verbose_name='\u0412\u043c\u0435\u0441\u0442\u0438\u043c\u043e\u0441\u0442\u044c')),
+            ],
+            options={
+                'verbose_name': '\u041a\u043e\u043c\u043d\u0430\u0442\u044b',
+                'verbose_name_plural': '\u041a\u043e\u043c\u043d\u0430\u0442\u044b',
+            },
+        ),
+        migrations.CreateModel(
+            name='Users',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('name', models.CharField(max_length=256, verbose_name='\u0418\u043c\u044f')),
+                ('paycheck', models.IntegerField(verbose_name='\u0417\u0430\u0440\u043f\u043b\u0430\u0442\u0430')),
+                ('date_joined', models.DateField(verbose_name='\u0414\u0430\u0442\u0430 \u043f\u043e\u0441\u0442\u0443\u043f\u043b\u0435\u043d\u0438\u044f \u043d\u0430 \u0440\u0430\u0431\u043e\u0442\u0443')),
+            ],
+            options={
+                'verbose_name': '\u041f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u0442\u0435\u043b\u0438',
+                'verbose_name_plural': '\u041f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u0442\u0435\u043b\u0438',
+            },
+        ),
+    ]
