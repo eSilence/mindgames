@@ -41,7 +41,7 @@ class HttpRequestHandler(aiohttp.server.ServerHttpProtocol):
                 }).encode()
             yield from self.send_json(response, data)
         else:
-            file_path = os.path.join(*message.path[1:].split('/'))
+            file_path = unquote(os.path.join(*message.path[1:].split('/')))
             if os.path.exists(file_path):
                 yield from self.show_file(response, file_path)
             else:
