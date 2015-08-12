@@ -10,33 +10,6 @@ import aiohttp.server
 from aiohttp.multidict import MultiDict
 
 
-@asyncio.coroutine
-def patched_read_chunk(self, size=8192):
-    """Reads body part content chunk of the specified size.
-    The body part must has `Content-Length` header with proper value.
-
-    :param int size: chunk size
-
-    :rtype: bytearray
-    """
-    if self._at_eof:
-        return b''
-    assert self._length is not None, \
-        'Content-Length required for chunked read'
-    chunk_size = min(size, self._length - self._read_bytes)
-    chunk = yield from self._content.read(chunk_size)
-    # XXX: read chunk length can be less than chunk_size
-    # self._read_bytes += chunk_size
-    self._read_bytes += len(chunk)
-    if self._read_bytes == self._length:
-        self._at_eof = True
-        assert b'\r\n' == (yield from self._content.readline()), \
-            'reader did not read all the data or it is malformed'
-    return chunk
-
-aiohttp.BodyPartReader.read_chunk = patched_read_chunk
-
-
 class UploadRegistry(dict):
     _instance = None
 
