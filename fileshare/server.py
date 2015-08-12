@@ -29,7 +29,8 @@ class HttpRequestHandler(aiohttp.server.ServerHttpProtocol):
             yield from self.do_GET(message, payload)
 
     def do_GET(self, message, payload):
-        response = aiohttp.Response(self.writer, 200,
+        response = aiohttp.Response(self.writer,
+                                    200,
                                     http_version=message.version)
         if '?' in message.path:
             query = message.path.split('?')[1]
@@ -72,7 +73,8 @@ class HttpRequestHandler(aiohttp.server.ServerHttpProtocol):
             registry[part.filename] = 1
 
         data = json.dumps({'progress': 100}).encode()
-        response = aiohttp.Response(self.writer, 200,
+        response = aiohttp.Response(self.writer,
+                                    200,
                                     http_version=message.version)
         yield from self.send_json(response, data)
 
